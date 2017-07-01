@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ltsllc</groupId>
-    <artifactId>Example</artifactId>
+    <artifactId>mirandaUtilities</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
@@ -32,6 +32,8 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
+
 
 
     </dependencies>

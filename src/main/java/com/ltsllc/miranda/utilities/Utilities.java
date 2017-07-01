@@ -1,4 +1,5 @@
-package com.ltsllc.example;
+package com.ltsllc.miranda.utilities;
+
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
@@ -16,10 +17,10 @@ import java.security.*;
 /**
  * Created by Clark on 6/29/2017.
  */
-public class Example {
+public class Utilities {
     public static void main(String[] argv) throws Exception {
-        Example example = new Example();
-        example.go();
+        Utilities utilities = new Utilities();
+        utilities.go();
     }
 
     public String toPemString(PublicKey publicKey, String password) throws Exception {

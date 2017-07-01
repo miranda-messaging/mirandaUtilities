@@ -1,4 +1,4 @@
-package com.ltsllc.example;
+package com.ltsllc.miranda.utilities;
 
 import sun.security.pkcs10.PKCS10;
 import sun.security.x509.X500Name;

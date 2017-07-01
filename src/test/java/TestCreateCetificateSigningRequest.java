@@ -1,5 +1,4 @@
-import com.ltsllc.example.CreateCertificateSigningRequest;
-import com.ltsllc.example.Example;
+import com.ltsllc.miranda.utilities.Utilities;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -8,8 +7,8 @@ import org.junit.jupiter.api.Test;
 public class TestCreateCetificateSigningRequest {
     @Test
     public void testCreateCSR () throws Exception {
-        Example example = new Example();
-        example.createSignatureRequest();
+        Utilities utilities = new Utilities();
+        utilities.createSignatureRequest();
     }
 
 }
