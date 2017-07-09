@@ -8,7 +8,6 @@ public class TestCreateCetificateSigningRequest {
     @Test
     public void testCreateCSR () throws Exception {
         Utilities utilities = new Utilities();
-        utilities.createSignatureRequest();
     }
 
 }
