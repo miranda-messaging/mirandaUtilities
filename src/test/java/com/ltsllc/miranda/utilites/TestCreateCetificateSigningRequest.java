@@ -1,5 +1,7 @@
+package com.ltsllc.miranda.utilites;
+
 import com.ltsllc.miranda.utilities.Utilities;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Created by Clark on 6/30/2017.

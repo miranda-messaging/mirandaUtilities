@@ -5,6 +5,7 @@ import com.ltsllc.miranda.clientinterface.basicclasses.PrivateKey;
 import com.ltsllc.miranda.clientinterface.basicclasses.PublicKey;
 import com.ltsllc.miranda.clientinterface.basicclasses.User;
 import com.ltsllc.miranda.user.BootstrapUsersFile;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,15 @@ public class CreateUserCommand extends UtilitiesCommand {
     private String keystoreFilename;
     private String userFileFilename;
     private String publicKeyFilename;
+    private String directory;
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(String directory) {
+        this.directory = directory;
+    }
 
     public String getPublicKeyFilename() {
         return publicKeyFilename;
@@ -91,29 +101,45 @@ public class CreateUserCommand extends UtilitiesCommand {
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
         String pem = Utils.toPem(keyPair.getPublic());
-        String publicKeyFilename = name + ".public.pem";
-        Utils.writeTextFile(publicKeyFilename, pem);
+        Utils.writeTextFile(getPublicKeyFilenameFor(name), pem);
 
         pem = Utils.toPem(keyPair.getPrivate());
-        String privateKeyFilename = name + ".private.pem";
-        Utils.writeTextFile(privateKeyFilename, pem);
+        Utils.writeTextFile(getPrivateKeyFilenameFor(name), pem);
 
         return keyPair;
     }
 
+    public String getPublicKeyFilenameFor (String name) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getDirectory());
+        stringBuilder.append("/");
+        stringBuilder.append(name);
+        stringBuilder.append(".public.pem");
+
+        return stringBuilder.toString();
+    }
+
+    public String getPrivateKeyFilenameFor (String name) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getDirectory());
+        stringBuilder.append("/");
+        stringBuilder.append(name);
+        stringBuilder.append(".private.pem");
+
+        return stringBuilder.toString();
+    }
+
     public java.security.PublicKey loadPublicKey (String userName) throws IOException {
-        String publicKeyFilename = userName + ".public.pem";
-        String pem = Utils.readTextFile(publicKeyFilename);
+        String pem = Utils.readTextFile(getPublicKeyFilenameFor(userName));
         return Utils.toPublicKey(pem);
     }
 
     public java.security.PrivateKey loadPrivateKey (String userName) throws IOException, GeneralSecurityException {
-        String privateKeyFilename = userName + ".private.pem";
-        String pem = Utils.readTextFile(privateKeyFilename);
+        String pem = Utils.readTextFile(getPrivateKeyFilenameFor(userName));
         return Utils.toPrivateKey(pem);
     }
 
-    public void go () {
+    public void go () throws CommandException {
         try {
             KeyPair keyPair = null;
             if (needToCreateKeyPair(getUserName()))
@@ -124,6 +150,7 @@ public class CreateUserCommand extends UtilitiesCommand {
 
             PublicKey publicKey = new PublicKey(keyPair.getPublic());
             User user = createUser(getUserName(), getUserType(), getUserDescription(), publicKey);
+            user.check();
 
             BootstrapUsersFile bootstrapUsersFile = new BootstrapUsersFile(getUserFileFilename(), getKeystoreFilename(),
                     getKeystorePasswod());
@@ -131,16 +158,14 @@ public class CreateUserCommand extends UtilitiesCommand {
             bootstrapUsersFile.read();
             bootstrapUsersFile.create(user);
             bootstrapUsersFile.write();
-        } catch (GeneralSecurityException|IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new CommandException(e);
         }
     }
 
     public boolean needToCreateKeyPair (String userName) {
-        String publicKeyFilename = userName + ".public.pem";
-        String privateKeyFilename = userName + ".private.pem";
-        File publicKeyFile = new File(publicKeyFilename);
-        File privateKeyFile = new File(privateKeyFilename);
+        File publicKeyFile = new File(getPublicKeyFilenameFor(userName));
+        File privateKeyFile = new File(getPrivateKeyFilenameFor(userName));
 
         if (!publicKeyFile.exists())
             return true;
@@ -158,35 +183,32 @@ public class CreateUserCommand extends UtilitiesCommand {
         return user;
     }
 
-    public PublicKey getPublicKey (String name) throws IOException {
-        String publicKeyFilename = name + ".public.pem";
-        File publicKeyFile = new File (publicKeyFilename);
-        String pem = Utils.readTextFile(publicKeyFilename);
-        java.security.PublicKey jsPublicKey = Utils.toPublicKey(pem);
-        PublicKey publicKey = new PublicKey(jsPublicKey);
-
-        return publicKey;
-    }
-
     @Override
-    public void check() {
+    public void check() throws CommandException {
+        if (null == getDirectory()) {
+            throw new CommandException("missing directory");
+        }
+
         if (null == getKeystoreFilename()) {
-            printErrorAndUsageAndExit("missing keystor");
+            throw new CommandException("missing keystore");
         }
 
         if (null == getUserName()) {
-            printErrorAndUsageAndExit("missing user name");
+            throw new CommandException("missing user name");
         }
 
         if (User.UserTypes.Unknown == getUserType()) {
-            printErrorAndUsageAndExit("missin user type");
+            throw new CommandException("missing user type");
         }
 
-        if (null == getKeystoreFilename()) {
-            printErrorAndUsageAndExit("missing keystore");
+        if (null == getUserFileFilename()) {
+            throw new CommandException("missing user file");
         }
 
-        String message = "the keystore, " + getKeystoreFilename() + ", does not exist";
+        String message = "the directory, " + getDirectory() + ", does not exist or is not a directory";
+        checkDirectory(getDirectory(), message);
+
+        message = "the keystore, " + getKeystoreFilename() + ", does not exist";
         checkFile (getKeystoreFilename(), message);
 
         message = "The users file, " + getUserFileFilename() + ", does not exist";

@@ -18,10 +18,16 @@ abstract public class UtilitiesCommand implements Command {
         System.err.println(getUsage());
     }
 
-    public void checkFile (String filename, String message) {
+    public void checkFile (String filename, String message) throws CommandException{
         File file = new File(filename);
         if (!file.exists()) {
-            printErrorAndUsageAndExit(message);
+            throw new CommandException(message);
         }
+    }
+
+    public void checkDirectory (String directory, String message) throws CommandException {
+        File file = new File(directory);
+        if (!file.isDirectory())
+            throw new CommandException(message);
     }
 }
