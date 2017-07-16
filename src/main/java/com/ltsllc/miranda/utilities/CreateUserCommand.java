@@ -25,11 +25,6 @@ public class CreateUserCommand extends UtilitiesCommand {
     private String keystoreFilename;
     private String userFileFilename;
     private String publicKeyFilename;
-    private String directory;
-
-    public String getDirectory() {
-        return directory;
-    }
 
     public void setDirectory(String directory) {
         this.directory = directory;
@@ -107,26 +102,6 @@ public class CreateUserCommand extends UtilitiesCommand {
         Utils.writeTextFile(getPrivateKeyFilenameFor(name), pem);
 
         return keyPair;
-    }
-
-    public String getPublicKeyFilenameFor (String name) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getDirectory());
-        stringBuilder.append("/");
-        stringBuilder.append(name);
-        stringBuilder.append(".public.pem");
-
-        return stringBuilder.toString();
-    }
-
-    public String getPrivateKeyFilenameFor (String name) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getDirectory());
-        stringBuilder.append("/");
-        stringBuilder.append(name);
-        stringBuilder.append(".private.pem");
-
-        return stringBuilder.toString();
     }
 
     public java.security.PublicKey loadPublicKey (String userName) throws IOException {

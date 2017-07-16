@@ -12,7 +12,7 @@ import java.security.Signature;
 /**
  * Created by Clark on 6/30/2017.
  */
-public class CreateCertificateSigningRequest {
+public class CreateCSRCommand {
     public static final String UNKNOWN = "unknown";
 
     private String country = UNKNOWN;

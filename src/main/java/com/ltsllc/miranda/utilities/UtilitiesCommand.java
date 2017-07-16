@@ -6,6 +6,8 @@ import java.io.File;
  * Created by clarkhobbie on 7/8/17.
  */
 abstract public class UtilitiesCommand implements Command {
+    protected String directory;
+
     public String getUsage () {
         return
                 "utilities <command> [<options>]\n"
@@ -29,5 +31,29 @@ abstract public class UtilitiesCommand implements Command {
         File file = new File(directory);
         if (!file.isDirectory())
             throw new CommandException(message);
+    }
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public String getPublicKeyFilenameFor (String name) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getDirectory());
+        stringBuilder.append("/");
+        stringBuilder.append(name);
+        stringBuilder.append(".public.pem");
+
+        return stringBuilder.toString();
+    }
+
+    public String getPrivateKeyFilenameFor (String name) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getDirectory());
+        stringBuilder.append("/");
+        stringBuilder.append(name);
+        stringBuilder.append(".private.pem");
+
+        return stringBuilder.toString();
     }
 }
