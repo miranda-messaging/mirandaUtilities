@@ -1,5 +1,7 @@
 package com.ltsllc.miranda.utilities;
 
+import com.ltsllc.common.commadline.CommandException;
+
 /**
  * Created by clarkhobbie on 7/8/17.
  */

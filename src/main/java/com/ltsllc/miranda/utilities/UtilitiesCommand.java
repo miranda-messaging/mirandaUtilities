@@ -1,5 +1,7 @@
 package com.ltsllc.miranda.utilities;
 
+import com.ltsllc.common.commadline.CommandException;
+
 import java.io.File;
 
 /**
@@ -20,7 +22,7 @@ abstract public class UtilitiesCommand implements Command {
         System.err.println(getUsage());
     }
 
-    public void checkFile (String filename, String message) throws CommandException{
+    public void checkFile (String filename, String message) throws CommandException {
         File file = new File(filename);
         if (!file.exists()) {
             throw new CommandException(message);

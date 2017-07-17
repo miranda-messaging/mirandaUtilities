@@ -1,13 +1,10 @@
 package com.ltsllc.miranda.utilites;
 
 import com.ltsllc.miranda.clientinterface.basicclasses.CertificateSigningRequest;
-import com.ltsllc.miranda.utilities.CommandException;
+import com.ltsllc.common.commadline.CommandException;
 import com.ltsllc.miranda.utilities.CreateCertificateAuthorityCommand;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.security.KeyPair;
-import java.util.concurrent.Callable;
 
 /**
  * Created by miranda on 7/16/2017.

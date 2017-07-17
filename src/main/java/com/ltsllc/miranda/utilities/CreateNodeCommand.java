@@ -1,36 +1,29 @@
 package com.ltsllc.miranda.utilities;
 
-import com.ltsllc.common.util.Utils;
-import com.ltsllc.miranda.clientinterface.basicclasses.PrivateKey;
-import org.bouncycastle.operator.OperatorException;
-import org.bouncycastle.pkcs.PKCSException;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
+import com.ltsllc.common.commadline.CommandException;
 
 /**
  * Created by clarkhobbie on 7/8/17.
  */
 public class CreateNodeCommand extends UtilitiesCommand {
-    private String certificateAuthorityFilename;
-    private String certificateAuthorityPassword;
+    private String caPrivateKeyFilename;
+    private String caPrivateKeyPassword;
 
-    public String getCertificateAuthorityPassword() {
-        return certificateAuthorityPassword;
+    public String getCaPrivateKeyPassword() {
+        return caPrivateKeyPassword;
     }
 
-    public void setCertificateAuthorityPassword(String certificateAuthorityPassword) {
-        this.certificateAuthorityPassword = certificateAuthorityPassword;
+    public void setCaPrivateKeyPassword(String caPrivateKeyPassword) {
+        this.caPrivateKeyPassword = caPrivateKeyPassword;
     }
 
-    public String getCertificateAuthorityFilename() {
+    public String getCaPrivateKeyFilename() {
 
-        return certificateAuthorityFilename;
+        return caPrivateKeyFilename;
     }
 
-    public void setCertificateAuthorityFilename(String certificateAuthorityFilename) {
-        this.certificateAuthorityFilename = certificateAuthorityFilename;
+    public void setCaPrivateKeyFilename(String caPrivateKeyFilename) {
+        this.caPrivateKeyFilename = caPrivateKeyFilename;
     }
 
     @Override
@@ -40,13 +33,13 @@ public class CreateNodeCommand extends UtilitiesCommand {
 
     @Override
     public void check() throws CommandException {
-        if (null == getCertificateAuthorityFilename())
-            throw new CommandException("missing certificate authoritity filename");
+        if (null == getCaPrivateKeyFilename())
+            throw new CommandException("missing certificate authority filename");
 
-        String message = "The certificate authority file, " + getCertificateAuthorityFilename() + ", does not exist";
-        checkFile(getCertificateAuthorityFilename(), message);
+        String message = "The certificate authority file, " + getCaPrivateKeyFilename() + ", does not exist";
+        checkFile(getCaPrivateKeyFilename(), message);
 
-        if (null == getCertificateAuthorityPassword())
+        if (null == getCaPrivateKeyPassword())
             throw new CommandException("missing certificate authority password");
     }
 }

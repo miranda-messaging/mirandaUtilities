@@ -1,18 +1,16 @@
 package com.ltsllc.miranda.utilities;
 
+import com.ltsllc.common.commadline.CommandException;
 import com.ltsllc.common.util.Utils;
-import com.ltsllc.miranda.clientinterface.basicclasses.PrivateKey;
 import com.ltsllc.miranda.clientinterface.basicclasses.PublicKey;
 import com.ltsllc.miranda.clientinterface.basicclasses.User;
 import com.ltsllc.miranda.user.BootstrapUsersFile;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.KeyStore;
 
 /**
  * Created by clarkhobbie on 7/7/17.

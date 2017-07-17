@@ -1,18 +1,16 @@
 package com.ltsllc.miranda.utilities;
 
+import com.ltsllc.common.commadline.CommandException;
 import com.ltsllc.common.util.Utils;
 import com.ltsllc.miranda.clientinterface.basicclasses.CertificateSigningRequest;
 import com.ltsllc.miranda.clientinterface.basicclasses.PrivateKey;
 import com.ltsllc.miranda.clientinterface.basicclasses.PublicKey;
-import org.bouncycastle.jcajce.util.DefaultJcaJceHelper;
 import org.bouncycastle.operator.OperatorException;
-import sun.security.x509.X500Name;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Date;

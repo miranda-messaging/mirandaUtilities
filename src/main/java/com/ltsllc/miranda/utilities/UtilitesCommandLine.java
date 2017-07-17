@@ -1,5 +1,6 @@
 package com.ltsllc.miranda.utilities;
 
+import com.ltsllc.common.commadline.CommandException;
 import com.ltsllc.common.commadline.CommandLine;
 
 /**
@@ -10,7 +11,7 @@ public class UtilitesCommandLine extends CommandLine {
         Unknown (-1),
 
         CreateUser(1 + Switches.LAST.getIndex()),
-        CreateCetificateAuthority(2 + Switches.LAST.getIndex()),
+        CreateCertificateAuthority(2 + Switches.LAST.getIndex()),
         CreateNode(3 + Switches.LAST.getIndex()),
         CreateSubscription(4 + Switches.LAST.getIndex()),
         Help(5 + Switches.LAST.getIndex()),
@@ -19,7 +20,13 @@ public class UtilitesCommandLine extends CommandLine {
         Username(8 + Switches.LAST.getIndex()),
         UserDescription(9 + Switches.LAST.getIndex()),
         UserPublicKeyFile(10 + Switches.LAST.getIndex()),
-        UserFile(11 + Switches.LAST.getIndex());
+        UsersFile(11 + Switches.LAST.getIndex()),
+        CountryCode(12 + Switches.LAST.getIndex()),
+        State(13 + Switches.LAST.getIndex()),
+        City(14 + Switches.LAST.getIndex()),
+        Company(15 + Switches.LAST.getIndex()),
+        Division(16 + Switches.LAST.getIndex()),
+        Password(17 + Switches.LAST.getIndex());
 
         private int index;
 
@@ -29,6 +36,50 @@ public class UtilitesCommandLine extends CommandLine {
 
         public int getIndex() {
             return index;
+        }
+
+        public static UtilitiesOptions toUtilitiesOptions (Switches aSwitch) throws CommandException {
+            UtilitiesOptions option = Unknown;
+
+            if (aSwitch.getIndex() == CreateUser.getIndex())
+                option = CreateUser;
+            else if (aSwitch.getIndex() == CreateCertificateAuthority.getIndex())
+                option = CreateCertificateAuthority;
+            else if (aSwitch.getIndex() == CreateNode.getIndex())
+                option = CreateNode;
+            else if (aSwitch.getIndex() == CreateSubscription.getIndex())
+                option = CreateSubscription;
+            else if (aSwitch.getIndex() == Help.getIndex())
+                option = Help;
+            else if (aSwitch.getIndex() == KeystoreFilename.getIndex())
+                option = KeystoreFilename;
+            else if (aSwitch.getIndex() == KeystorePassword.getIndex())
+                option = KeystorePassword;
+            else if (aSwitch.getIndex() == Username.getIndex())
+                option = Username;
+            else if (aSwitch.getIndex() == UserDescription.getIndex())
+                option = UserDescription;
+            else if (aSwitch.getIndex() == UserPublicKeyFile.getIndex())
+                option = UserPublicKeyFile;
+            else if (aSwitch.getIndex() == UsersFile.getIndex())
+                option = UsersFile;
+            else if (aSwitch.getIndex() == CountryCode.getIndex())
+                option = CountryCode;
+            else if (aSwitch.getIndex() == State.getIndex())
+                option = State;
+            else if (aSwitch.getIndex() == City.getIndex())
+                option = City;
+            else if (aSwitch.getIndex() == Company.getIndex())
+                option = Company;
+            else if (aSwitch.getIndex() == Division.getIndex())
+                option = Division;
+            else if (aSwitch.getIndex() == Password.getIndex())
+                option = Password;
+            else {
+                throw new CommandException("Unrecognized switch index: " + aSwitch.getIndex());
+            }
+
+            return option;
         }
     }
 
@@ -65,22 +116,41 @@ public class UtilitesCommandLine extends CommandLine {
     public static final String OPTION_USER_PUBLIC_KEY_FILE_SHORT = "-b";
     public static final String OPTION_USER_PUBLIC_KEY_FILE_LONG = "-userPublicKey";
 
-    public static final String OPTION_USER_FILE_SHORT = "-f";
-    public static final String OPTION_USER_FILE_LONG = "--userFile";
+    public static final String OPTION_USERS_FILE_SHORT = "-f";
+    public static final String OPTION_USERS_FILE_LONG = "--usersFile";
+
+    public static final String OPTION_COUNTRY_CODE_SHORT = "-g";
+    public static final String OPTION_COUNTRY_CODE_LONG = "--countryCode";
+
+    public static final String OPTION_STATE_SHORT = "-h";
+    public static final String OPTION_STATE_LONG = "--state";
+
+    public static final String OPTION_CITY_SHORT = "-i";
+    public static final String OPTION_CITY_LONG = "--city";
+
+    public static final String OPTION_COMPANY_SHORT = "-j";
+    public static final String OPTION_COMPANY_LONG = "--company";
+
+    public static final String OPTION_DIVISION_SHORT = "-k";
+    public static final String OPTION_DIVISION_LONG = "--division";
+
+    public static final String OPTION_PASSWORD_SHORT = "-l";
+    public static final String OPTION_PASSWORD_LONG = "--password";
+
 
     public UtilitesCommandLine (String[] argv) {
         super(argv);
     }
 
     @Override
-    public Switches toSwitch(String argument) {
+    public Switches toSwitch(String argument) throws CommandException {
         Switches aSwitch = Switches.PlaceHolder;
 
         if (argument.equals(OPTION_CREATE_USER_SHORT) || argument.equals(OPTION_CREATE_USER_LONG)) {
             aSwitch.setIndex(UtilitiesOptions.CreateUser.getIndex());
         } else if (argument.equals(OPTION_CREATE_CERTIFICATE_AUTHORITY_SHORT)
                 || argument.equals(OPTION_CREATE_CERTIFICATE_AUTHORITY_LONG)) {
-            aSwitch.setIndex(UtilitiesOptions.CreateCetificateAuthority.getIndex());
+            aSwitch.setIndex(UtilitiesOptions.CreateCertificateAuthority.getIndex());
         } else if (argument.equals(OPTION_CREATE_NODE_SHORT) || argument.equals(OPTION_CREATE_NODE_LONG)) {
             aSwitch.setIndex(UtilitiesOptions.CreateNode.getIndex());
         } else if (argument.equals(OPTION_CREATE_SUBSCRIPTION_SHORT) || argument.equals(OPTION_CREATE_SUBSCRIPTION_LONG)) {
@@ -97,14 +167,26 @@ public class UtilitesCommandLine extends CommandLine {
             aSwitch.setIndex(UtilitiesOptions.UserDescription.getIndex());
         } else if (argument.equals(OPTION_USER_PUBLIC_KEY_FILE_SHORT) || argument.equals(OPTION_USER_PUBLIC_KEY_FILE_LONG)) {
             aSwitch.setIndex(UtilitiesOptions.UserPublicKeyFile.getIndex());
-        } else if (argument.equals(OPTION_USER_FILE_SHORT) || argument.equals(OPTION_USER_FILE_LONG)) {
-            aSwitch.setIndex(UtilitiesOptions.UserFile.getIndex());
+        } else if (argument.equals(OPTION_USERS_FILE_SHORT) || argument.equals(OPTION_USERS_FILE_LONG)) {
+            aSwitch.setIndex(UtilitiesOptions.UsersFile.getIndex());
+        } else if (argument.equals(OPTION_COUNTRY_CODE_SHORT) || argument.equals(OPTION_COUNTRY_CODE_LONG)) {
+            aSwitch.setIndex(UtilitiesOptions.CountryCode.getIndex());
+        } else if (argument.equals(OPTION_STATE_SHORT) || argument.equals(OPTION_STATE_LONG)) {
+            aSwitch.setIndex(UtilitiesOptions.State.getIndex());
+        } else if (argument.equals(OPTION_CITY_SHORT) || argument.equals(OPTION_CITY_LONG)) {
+            aSwitch.setIndex(UtilitiesOptions.City.getIndex());
+        } else if (argument.equals(OPTION_COMPANY_SHORT) || argument.equals(OPTION_COMPANY_LONG)) {
+            aSwitch.setIndex(UtilitiesOptions.Company.getIndex());
+        } else if (argument.equals(OPTION_DIVISION_SHORT) || argument.equals(OPTION_DIVISION_LONG)) {
+            aSwitch.setIndex(UtilitiesOptions.Division.getIndex());
+        } else if (argument.equals(OPTION_PASSWORD_SHORT) || argument.equals(OPTION_PASSWORD_LONG)) {
+            aSwitch.setIndex(UtilitiesOptions.Password.getIndex());
         } else {
             String command = argument;
             if (argument.startsWith("-"))
                 command = argument.substring(1);
 
-            printErrorAndUsageAndExit("unknown command: " + command);
+            throw new CommandException("unrecognized command: " + command);
         }
 
         return aSwitch;
@@ -125,38 +207,12 @@ public class UtilitesCommandLine extends CommandLine {
         return USAGE;
     }
 
-    public UtilitiesOptions toOption (Switches aSwitch) {
-        UtilitiesOptions option = UtilitiesOptions.Unknown;
-
-        if (aSwitch.getIndex() == UtilitiesOptions.CreateUser.getIndex())
-            option = UtilitiesOptions.CreateUser;
-        else if (aSwitch.getIndex() == UtilitiesOptions.CreateCetificateAuthority.getIndex())
-            option = UtilitiesOptions.CreateCetificateAuthority;
-        else if (aSwitch.getIndex() == UtilitiesOptions.CreateNode.getIndex())
-            option = UtilitiesOptions.CreateNode;
-        else if (aSwitch.getIndex() == UtilitiesOptions.CreateSubscription.getIndex())
-            option = UtilitiesOptions.CreateSubscription;
-        else if (aSwitch.getIndex() == UtilitiesOptions.Username.getIndex())
-            option = UtilitiesOptions.Username;
-        else if (aSwitch.getIndex() == UtilitiesOptions.UserDescription.getIndex())
-            option = UtilitiesOptions.UserDescription;
-        else if (aSwitch.getIndex() == UtilitiesOptions.UserPublicKeyFile.getIndex())
-            option = UtilitiesOptions.UserPublicKeyFile;
-        else if (aSwitch.getIndex() == UtilitiesOptions.UserPublicKeyFile.getIndex())
-            option = UtilitiesOptions.UserFile;
-        else {
-            printErrorAndUsageAndExit("unkrecognized option: " + aSwitch);
-        }
-
-        return option;
-    }
-
     @Override
-    public void processSwitch(Switches aSwitch) {
-        UtilitiesOptions option = toOption(aSwitch);
+    public void processSwitch(Switches aSwitch) throws CommandException {
+        UtilitiesOptions option = UtilitiesOptions.toUtilitiesOptions(aSwitch);
 
         switch (option) {
-            case CreateCetificateAuthority: {
+            case CreateCertificateAuthority: {
                 CreateCertificateCommand createCertifcateCommand = new CreateCertificateCommand();
                 setCommand(createCertifcateCommand);
                 break;
@@ -211,19 +267,53 @@ public class UtilitesCommandLine extends CommandLine {
                 break;
             }
 
-            case UserFile: {
+            case UsersFile: {
                 processUserFile();
                 break;
             }
 
+            case City: {
+                processCity();
+                break;
+            }
+
+            case Division: {
+                processDivision();
+                break;
+            }
+
+            case State: {
+                processState();
+                break;
+            }
+
+            case Company: {
+                processCompany();
+                break;
+            }
+
+            case Password: {
+                processPassword();
+                break;
+            }
+
+            case CountryCode: {
+                processCountryCode();
+                break;
+            }
             default: {
-                printErrorAndUsageAndExit("unrecognized option: " + option);
+                super.processSwitch(aSwitch);
+                break;
             }
         }
     }
 
     public CreateUserCommand getCreateUserCommand () {
         return (CreateUserCommand) getCommand();
+    }
+
+    public CreateCertificateAuthorityCommand getCreateCertificateAuthorityCommand () {
+        return (CreateCertificateAuthorityCommand) getCommand();
     }
 
     public void processKeystoreFilename () {
@@ -235,7 +325,10 @@ public class UtilitesCommandLine extends CommandLine {
     }
 
     public void processUsername () {
-        getCreateUserCommand().setUserName(getArgAndAdvanceOrError("missing username"));
+        if (getCommand() instanceof CreateUserCommand)
+            getCreateUserCommand().setUserName(getArgAndAdvanceOrError("missing username"));
+        else if (getCommand() instanceof CreateCertificateAuthorityCommand)
+            getCreateCertificateAuthorityCommand().setName(getArgAndAdvanceOrError("missing name"));
     }
 
     public void processUserPublicKeyFile () {
@@ -248,5 +341,29 @@ public class UtilitesCommandLine extends CommandLine {
 
     public void processUserFile () {
         getCreateUserCommand().setUserFileFilename(getArgAndAdvanceOrError("missing user file"));
+    }
+
+    public void processCity () {
+        getCreateCertificateAuthorityCommand().setCity(getArgAndAdvanceOrError("missing city"));
+    }
+
+    public void processDivision () {
+        getCreateCertificateAuthorityCommand().setDivision(getArgAndAdvanceOrError("missing division"));
+    }
+
+    public void processState () {
+        getCreateCertificateAuthorityCommand().setState(getArgAndAdvanceOrError("missing state"));
+    }
+
+    public void processCompany () {
+        getCreateCertificateAuthorityCommand().setCompany(getArgAndAdvanceOrError("missing company"));
+    }
+
+    public void processPassword () {
+        getCreateCertificateAuthorityCommand().setPassword(getArgAndAdvanceOrError("missing password"));
+    }
+
+    public void processCountryCode () {
+        getCreateCertificateAuthorityCommand().setCountryCode(getArgAndAdvanceOrError("missing country code"));
     }
 }
